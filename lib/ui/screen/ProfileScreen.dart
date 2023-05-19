@@ -1,6 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:instagram_clone/model/Post.dart';
-import 'package:instagram_clone/store/Post.dart';
 import 'package:instagram_clone/store/User.dart';
 import 'package:instagram_clone/ui/components/BottomNavigation.dart';
 import 'package:provider/provider.dart';
@@ -12,8 +10,7 @@ class ProfileScreen extends StatefulWidget {
   _ProfileScreenState createState() => _ProfileScreenState();
 }
 
-class _ProfileScreenState extends State<ProfileScreen>
-    with SingleTickerProviderStateMixin {
+class _ProfileScreenState extends State<ProfileScreen>  with SingleTickerProviderStateMixin{
   late TabController _tabController;
 
   @override
@@ -22,6 +19,7 @@ class _ProfileScreenState extends State<ProfileScreen>
     _tabController = TabController(length: 3, vsync: this);
   }
 
+  @override
   dispose() {
     _tabController.dispose();
     super.dispose();
@@ -121,75 +119,24 @@ class _ProfileScreenState extends State<ProfileScreen>
                             child: Icon(Icons.person_add_outlined,
                                 color: Colors.black))))
               ]),
-              SizedBox(
+              const SizedBox(
                 height: 10,
-              ),
+                ),
+
               TabBar(
-                  labelColor: Colors.black,
-                  controller: _tabController,
-                  indicatorColor: Colors.black,
-                  unselectedLabelColor: Colors.grey,
-                  tabs: const [
-                    Tab(icon: Icon(Icons.grid_on_outlined)),
-                    Tab(icon: Icon(Icons.person_pin_outlined)),
-                    Tab(icon: Icon(Icons.bookmark_border_outlined))
-                  ]),
+                labelColor: Colors.black,
+                controller: _tabController,
+                tabs: const [
+                  Tab(icon: Icon(Icons.grid_on_outlined))
+                ]
+                ),
               Expanded(
-                  child: TabBarView(controller: _tabController, children: [
-                GridView.builder(
-                    shrinkWrap: true,
-                    itemCount: user.postsIds.length,
-                    gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-                        crossAxisCount: 3,
-                        crossAxisSpacing: 2,
-                        mainAxisSpacing: 2),
-                    itemBuilder: (context, index) {
-                      final post = context
-                          .read<PostProvider>()
-                          .getPost(user.postsIds[index]);
-                      return PostItem(post: post);
-                    }),
-                GridView.builder(
-                    shrinkWrap: true,
-                    itemCount: user.postsIds.length,
-                    gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-                        crossAxisCount: 3,
-                        crossAxisSpacing: 2,
-                        mainAxisSpacing: 2),
-                    itemBuilder: (context, index) {
-                      final post = context
-                          .read<PostProvider>()
-                          .getPost(user.postsIds[index]);
-                      return PostItem(post: post);
-                    }),
-                GridView.builder(
-                    shrinkWrap: true,
-                    itemCount: user.postsIds.length,
-                    gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-                        crossAxisCount: 3,
-                        crossAxisSpacing: 2,
-                        mainAxisSpacing: 2),
-                    itemBuilder: (context, index) {
-                      final post = context
-                          .read<PostProvider>()
-                          .getPost(user.postsIds[index]);
-                      return PostItem(post: post);
-                    }),
-              ]))
+                child: TabBarView(
+                  controller:_tabController,
+                  children: const [
+                  ],
+                  )
+                )
             ])));
   }
 }
-
-class PostItem extends StatelessWidget {
-  final Post post;
-  const PostItem({Key? key, required this.post}) : super(key: key);
-
-  @override
-  Widget build(BuildContext context) {
-    return Container(
-        decoration: BoxDecoration(
-            image: DecorationImage(
-                image: NetworkImage(post.imageUrl), fit: BoxFit.cover)));
-  }
-}
-// Thanks for watching
